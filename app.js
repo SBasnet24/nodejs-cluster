@@ -10,19 +10,19 @@ if (cluster.isMaster) {
   console.log(`Clustering application to ${numCPUs.length} processes`);
   numCPUs.forEach(() => cluster.fork()); // running app.js in worker mode in
 
-//    if the cluster is disconnected in some ways we can use this code
-//   cluster.on("exit", (worker, code) => {
-//     if (code !== 0 && !worker.exitedAfterDisconnect) {
-//       console.log(`Worker ${worker.process.pid} crashed. Starting a new worker mode`);
-//       cluster.fork();
-//     }
-//   });
+  //  if the cluster is disconnected in some ways we can use this code
+  cluster.on("exit", (worker, code) => {
+    if (code !== 0 && !worker.exitedAfterDisconnect) {
+      console.log(`Worker ${worker.process.pid} crashed. Starting a new worker mode`);
+      cluster.fork();
+    }
+  });
 } else {
   const { pid } = process;
 
-//   setTimeout(() => {
-//     throw new Error("Ooops");
-//   }, Math.ceil(Math.random() * 3) * 1000);
+  setTimeout(() => {
+    throw new Error("Ooops");
+  }, Math.ceil(Math.random() * 3) * 1000);
 
   app.get("/", (req, res) => {
     let i = 1e7;
