@@ -10,7 +10,6 @@ if (cluster.isMaster) {
   console.log(`Clustering application to ${numCPUs.length} processes`);
   numCPUs.forEach(() => cluster.fork()); // running app.js in worker mode in
 
-  //  if the cluster is disconnected in some ways we can use this code
   cluster.on("exit", (worker, code) => {
     if (code !== 0 && !worker.exitedAfterDisconnect) {
       console.log(`Worker ${worker.process.pid} crashed. Starting a new worker mode`);
